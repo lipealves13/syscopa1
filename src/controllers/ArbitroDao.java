@@ -1,11 +1,9 @@
 package controllers;
 
 import models.Arbitro;
+import models.Jogador;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class ArbitroDao implements Dao<Arbitro> {
 
@@ -42,4 +40,19 @@ public class ArbitroDao implements Dao<Arbitro> {
     public void delete(Arbitro arbitro) {
         arbitros.remove(arbitro);
     }
+
+    public Arbitro BuscaArbitroNome(String NomeBusca){
+        for(int i=0;arbitros.size()>i;i++){
+
+            Arbitro arbitro = arbitros.get(i);
+            String NomeAux = arbitro.getNome();
+            if(NomeAux.equals(NomeBusca)){
+
+                return arbitro;
+            }
+        }
+        System.out.println("Nome inválido ou Arbitro inexistente");
+        return null;
+    }
 }
+

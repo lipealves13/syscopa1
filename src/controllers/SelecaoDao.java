@@ -5,6 +5,7 @@ import models.Tecnico;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SelecaoDao implements Dao<Selecao> {
@@ -12,12 +13,12 @@ public class SelecaoDao implements Dao<Selecao> {
 
     @Override
     public Optional<Selecao> get(long id) {
-        return Optional.empty();
+        return Optional.ofNullable(selecoes.get((int) id));
     }
 
     @Override
     public List<Selecao> getAll() {
-        return null;
+        return selecoes;
     }
 
     @Override
@@ -27,7 +28,12 @@ public class SelecaoDao implements Dao<Selecao> {
 
     @Override
     public void update(Selecao selecao, String[] params) {
-
+        selecao.setNacionalidade(Objects.requireNonNull(
+                params[0], "Nacionalidade não pode ser null"
+        ));
+        selecao.setGrupo(Objects.requireNonNull(
+                params[1], "Grupo não pode ser null"
+        ));
     }
 
     @Override

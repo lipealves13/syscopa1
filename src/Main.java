@@ -1,8 +1,11 @@
 import controllers.*;
+import models.Arbitro;
 import models.Jogador;
 import models.Selecao;
 import models.Tecnico;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -69,18 +72,27 @@ public class Main {
 						selecao.setTecnico(tecnicoDao.buscaTecnicoNacionalidade(nacionalidadeSelecao));
 						selecaoDao.save(selecao);
 
-
-
-
-
 						continue;
 
 					case 2:
 						System.out.println("2 - Editar Seleção");
+						System.out.println("Digite a nacionalidade da Seleção que quer alterar: ");
+						String  selecaoBusca = teclado.next();
+						Selecao resultadoBuscaSelecao = selecaoDao.buscaSelecao(selecaoBusca);
+						System.out.println("Digite a nacionalidade: ");
+						String nacionalidade = teclado.next();
+						System.out.println("Digite a nacionalidade: ");
+						String grupo = teclado.next();
+						selecaoDao.update(resultadoBuscaSelecao, new String[]{grupo, nacionalidade});
+
 						continue;
 
 					case 3:
 						System.out.println("3 - Excluir Seleção");
+						System.out.println("Digite a nacionalidade da Seleção que quer excluir: ");
+						String  selecaoBuscaExcluir = teclado.next();
+						Selecao resultadoBuscaSelecaoExcluir = selecaoDao.buscaSelecao(selecaoBuscaExcluir);
+						selecaoDao.delete(resultadoBuscaSelecaoExcluir);
 						continue;
 
 					case 4:
@@ -150,13 +162,34 @@ public class Main {
 
 					case 2:
 						System.out.println("2 - Editar Jogador");
+						System.out.println("Digite o código do jogador (Nacionalidade + Numero da camisa): ");
+						Jogador jogadorBuscadoUpdate = jogadorDao.buscaJogadorCod(teclado.next());
+						System.out.println("Digite o nome: ");
+						String nomeU = teclado.next();
+						System.out.println("Digite o nacionalidade: ");
+						String nacionalidadeU = teclado.next();
+						System.out.println("Digite o Numero da camisa: ");
+						int numeroCamisaU = teclado.nextInt();
+						System.out.println("Digite o posição: ");
+						String posicaoU = teclado.next();
+						System.out.println("Digite a quantidade de catões amarelos: ");
+						int cartoesAmarelosU = teclado.nextInt();
+						System.out.println("Digite a quantidade de catões Vermelhos: ");
+						int cartoesVermelhosU = teclado.nextInt();
+						System.out.println("Digite a quantidade de gols marcados: ");
+						int golsMarcadosU = teclado.nextInt();
+						jogadorDao.update(jogadorBuscadoUpdate, new String[]{nomeU, nacionalidadeU, String.valueOf(numeroCamisaU),posicaoU, String.valueOf(cartoesAmarelosU), String.valueOf(cartoesVermelhosU), String.valueOf(golsMarcadosU)});
 
 
 
 						continue;
 
 					case 3:
+
 						System.out.println("3 - Excluir Jogador");
+						System.out.println("Digite o código do jogador (Nacionalidade + Numero da camisa): ");
+						Jogador jogadorBuscadoDelete = jogadorDao.buscaJogadorCod(teclado.next());
+						jogadorDao.delete(jogadorBuscadoDelete);
 						continue;
 
 					case 4:
@@ -194,18 +227,42 @@ public class Main {
 					switch (escolhaArbitro) {
 					case 1:
 						System.out.println("1 - Cadastrar Arbitro");
+						System.out.println("Digite o nome: ");
+						String nome = teclado.next();
+						System.out.println("Digite o nacionalidade: ");
+						String nacionalidade = teclado.next();
+						Arbitro arbitro = new Arbitro();
+						arbitro.setNome(nome);
+						arbitro.setNacionalidade(nacionalidade);
+						arbitroDao.save(arbitro);
 						continue;
 
 					case 2:
 						System.out.println("2 - Editar Arbitro");
+						System.out.println("Digite o nome: ");
+						String nomeBusca = teclado.next();
+						System.out.println("Digite o novo nome: ");
+						String nomeUpdate = teclado.next();
+						System.out.println("Digite a nova nacionalidade: ");
+						String nacionalidadeUpdate = teclado.next();
+						arbitroDao.update(arbitroDao.BuscaArbitroNome(nomeBusca), new String[]{nomeUpdate, nacionalidadeUpdate});
 						continue;
 
 					case 3:
 						System.out.println("3 - Excluir Arbitro");
+						System.out.println("Digite o nome para excluir: ");
+						String nomeBuscaDelete = teclado.next();
+						arbitroDao.delete(arbitroDao.BuscaArbitroNome(nomeBuscaDelete));
 						continue;
 
 					case 4:
 						System.out.println("4 - Listar Arbitros");
+						for(int iarbitros = 0;arbitroDao.getAll().size()>iarbitros;iarbitros++){
+							List<Arbitro> arbitros = arbitroDao.getAll();
+							System.out.print(iarbitros+1+" - ");
+							System.out.print(arbitros.get(iarbitros).getNome()+" - ");
+							System.out.println(arbitros.get(iarbitros).getNacionalidade());
+						}
 						continue;
 
 					default:
@@ -239,14 +296,29 @@ public class Main {
 
 					case 2:
 						System.out.println("2 - Editar Tecnico");
+						System.out.println("Digite a nacionalidade do tecnico que quer editar: ");
+						String NacionalidadeU = teclado.next();
+						System.out.println("Digite o novo nome: ");
+						String NomeU = teclado.next();
+						tecnicoDao.update(tecnicoDao.buscaTecnicoNacionalidade(NacionalidadeU),new String[]{NomeU});
 						continue;
 
 					case 3:
 						System.out.println("3 - Excluir Tecnico");
+						System.out.println("2 - Editar Tecnico");
+						System.out.println("Digite a nacionalidade do tecnico que quer editar: ");
+						String NacionalidadeDelete = teclado.next();
+						tecnicoDao.delete(tecnicoDao.buscaTecnicoNacionalidade(NacionalidadeDelete));
 						continue;
 
 					case 4:
 						System.out.println("4 - Listar Tecnico");
+						for(int itecnicos = 0;tecnicoDao.getAll().size()>itecnicos;itecnicos++){
+							List<Tecnico> tecnicos = tecnicoDao.getAll();
+							System.out.print(itecnicos+1+" - ");
+							System.out.print(tecnicos.get(itecnicos).getNome()+" - ");
+							System.out.println(tecnicos.get(itecnicos).getNacionalidade());
+						}
 						continue;
 
 					default:
