@@ -1,12 +1,11 @@
 import controllers.*;
-import models.Arbitro;
-import models.Jogador;
-import models.Selecao;
-import models.Tecnico;
+import models.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 public class Main {
 
@@ -20,12 +19,14 @@ public class Main {
 		int escolhaJogador = 0;
 		int escolhaArbitro = 0;
 		int escolhaTecnico = 0;
+		int escolhaPartida = 0;
 
 		//Objetos Dao
 		JogadorDao jogadorDao = new JogadorDao();
 		SelecaoDao selecaoDao = new SelecaoDao();
 		TecnicoDao tecnicoDao = new TecnicoDao();
 		ArbitroDao arbitroDao = new ArbitroDao();
+		PartidaDao partidaDao = new PartidaDao();
 
 		//input
 		Scanner teclado = new Scanner(System.in);
@@ -38,13 +39,14 @@ public class Main {
 			System.out.println("2 - Gerenciar Jogadores");
 			System.out.println("3 - Gerenciar Arbitros");
 			System.out.println("4 - Gerenciar Técnicos");
+			System.out.println("5 - Gerenciar Partidas");
 			System.out.println("0 - Sair");
 			System.out.println();
 			System.out.print("Digite o número da opção: ");
 
 			i = teclado.nextInt();
 			_utils.limpatela();
-			if (i < 5 && i >= 0) {
+			if (i < 6 && i >= 0) {
 				switch (i) {
 				case 1:
 					System.out.println("------------Selecoes------------");
@@ -325,6 +327,65 @@ public class Main {
 						_utils.opcaoInvalida();
 						continue;
 					}
+
+
+					case 5:
+						System.out.println("------------Partidas------------");
+						System.out.println("1 - Cadastrar Partidas");
+						System.out.println("2 - Editar Partidas");
+						System.out.println("3 - Excluir Partidas");
+						System.out.println("4 - Listar Partidas");
+						System.out.print("Digite o número da opção: ");
+						escolhaPartida = teclado.nextInt();
+						_utils.limpatela();
+
+						switch (escolhaPartida) {
+							case 1:
+								System.out.println("1 - Cadastrar Partidas");
+								System.out.println("Digite o nome da Seleção 1: ");
+								String selecaoA = teclado.next();
+								System.out.println("Digite o nome da Seleção 2: ");
+								String selecaoB = teclado.next();
+								System.out.println("Digite o número de gols da Seleção 1: ");
+								String golsselecaoA = teclado.next();
+								System.out.println("Digite o número de gols da Seleção 2: ");
+								String golsselecaoB = teclado.next();
+								System.out.println("Digite a data da partida: ");
+								String data = teclado.next();
+								System.out.println("Digite o horário da partida: ");
+								String horario = teclado.next();
+								System.out.println("Digite local da partida: ");
+								String local = teclado.next();
+
+								Partida partida = new Partida();
+								partida.setData(data);
+								partida.setLocal(local);
+								partida.setHorario(horario);
+								partida.setCodigo(selecaoA+selecaoB);
+								partida.setSelecaoA(selecaoDao.buscaSelecao(selecaoA));
+								partida.setSelecaoB(selecaoDao.buscaSelecao(selecaoB));
+								partida.setGolsSelecaoA(parseInt(golsselecaoA));
+								partida.setGolsSelecaoB(parseInt(golsselecaoB));
+								partidaDao.save(partida);
+								continue;
+
+
+							case 2:
+								System.out.println("2 - Editar Partidas");
+								continue;
+
+							case 3:
+								System.out.println("3 - Excluir Partidas");
+								continue;
+
+							case 4:
+								System.out.println("4 - Listar Partidas");
+								continue;
+
+							default:
+								_utils.opcaoInvalida();
+								continue;
+						}
 
 
 				case 0:
